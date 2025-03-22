@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Overview - BOBA Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section>
+        <h1>Traffic Overview</h1>
+        <button id="back-to-dashboard">Back to Dashboard</button>
+    </section>
+
+    <section class="traffic-details-container">
+        <!-- Detailed Traffic Info -->
+        <div class="traffic-card">
+            <h2>Real-time Traffic Details</h2>
+            <p>Users Active: <span id="active-users">0</span></p>
+            <p>Victims Detected: <span id="victim-details">0</span></p>
+            <p>Last Update: <span id="last-update-details">Just Now</span></p>
+        </div>
+
+        <div class="traffic-card">
+            <h2>Recent Traffic Events</h2>
+            <ul id="traffic-events">
+                <li>Event 1: User 123 hacked</li>
+                <li>Event 2: User 456 targeted</li>
+                <!-- More traffic events will appear here -->
+            </ul>
+        </div>
+    </section>
+
+    <script src="traffic.js"></script>
+</body>
+</html>
