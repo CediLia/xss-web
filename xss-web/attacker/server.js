@@ -40,23 +40,32 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
+  // Log incoming login request
+  console.log('Login attempt for username:', username);
+
   db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
     if (err) {
+      console.error('Database error:', err);
       return res.status(500).json({ error: 'Database error' });
     }
+
     if (!row) {
+      console.log('Invalid username:', username);
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 
+    // Compare the password using bcrypt
     if (bcrypt.compareSync(password, row.password)) {
+      console.log('Login successful for user:', username);
       res.status(200).json({ message: 'Login successful!' });
     } else {
+      console.log('Incorrect password for user:', username);
       res.status(400).json({ error: 'Invalid username or password' });
     }
   });
 });
 
-// Update User Route
+// Update User Route (example of how to update user details)
 app.post('/update-user', (req, res) => {
   const oldUsername = 'testuser'; 
   const newUsername = 'Cedilia';
@@ -76,7 +85,7 @@ app.post('/update-user', (req, res) => {
     if (err) {
       return res.status(500).json({ error: 'Failed to update user' });
     }
-    
+
     if (this.changes === 0) {
       return res.status(400).json({ error: 'User not found or not updated' });
     }
@@ -85,7 +94,7 @@ app.post('/update-user', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;  // Fix port to 3001
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
