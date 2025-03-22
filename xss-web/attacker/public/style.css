@@ -57,3 +57,43 @@ h1 {
     min-width: 300px;
     max-width: 400px;
 }
+/* Traffic Details Container */
+.traffic-details-container {
+    margin-top: 30px;
+}
+
+.traffic-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin: 10px 0;
+}
+
+/* Back Button */
+#back-to-dashboard {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#back-to-dashboard:hover {
+    background-color: #0056b3;
+}
