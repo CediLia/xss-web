@@ -36,3 +36,15 @@ app.post('/register', (req, res) => {
       });
     });
   });
+
+  // login route 
+
+  app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    // Retrieve the user by username
+    db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: 'Database error' });
+      }
+  
