@@ -2,6 +2,7 @@
 let victimCount = 0;
 let trafficCount = 0;
 
+// Function to refresh traffic stats
 function refreshTraffic() {
     // Update the victim count and traffic count with every fetch
     document.getElementById("victim-count").textContent = victimCount;
@@ -19,7 +20,7 @@ function fetchData() {
             // Update victim count
             victimCount = users.length; // Total number of users
             trafficCount = Math.floor(Math.random() * 100); // Simulate real-time traffic count
-            refreshTraffic();
+            refreshTraffic(); // Call refreshTraffic after fetching and updating the data
         });
     
     fetch("/stolenComments")
