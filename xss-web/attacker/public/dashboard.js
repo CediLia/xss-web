@@ -31,8 +31,17 @@ function fetchData() {
         });
 }
 
-// Fetch data every 2 seconds
-setInterval(fetchData, 2000);
+// Set up the "Refresh" button event listener after DOM content is loaded
+document.addEventListener("DOMContentLoaded", function() {
+    // Ensure refreshTraffic is defined and the button is found
+    const refreshButton = document.getElementById("refresh-btn");
+    if (refreshButton) {
+        refreshButton.addEventListener("click", refreshTraffic); // Bind click event to refreshTraffic
+    }
 
-// Fetch data once on page load to initialize
-fetchData();
+    // Fetch data every 2 seconds
+    setInterval(fetchData, 2000);
+
+    // Fetch data once on page load to initialize
+    fetchData();
+});
