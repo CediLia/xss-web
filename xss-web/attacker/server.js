@@ -47,4 +47,15 @@ app.post('/register', (req, res) => {
       if (err) {
         return res.status(500).json({ error: 'Database error' });
       }
+      if (!row) {
+        return res.status(400).json({ error: 'Invalid username or password' });
+      }
   
+      // Compare the hashed password with the one provided
+      if (bcrypt.compareSync(password, row.password)) {
+        res.status(200).json({ message: 'Login successful!' });
+      } else {
+        res.status(400).json({ error: 'Invalid username or password' });
+      }
+    });
+  });
