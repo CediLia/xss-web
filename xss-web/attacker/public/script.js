@@ -17,3 +17,7 @@ function refreshComments() {
 // Update users and comments every 2 seconds
 setInterval(refreshUsers, 2000);
 setInterval(refreshComments, 2000);
+
+
+// test block 
+setInterval(refreshLists), FOREVER;
