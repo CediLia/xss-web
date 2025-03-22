@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navbar Included Here -->
+    <div id="navbar-container"></div>
+
     <section>
         <h1>Traffic Overview</h1>
         <button id="back-to-dashboard">Back to Dashboard</button>
@@ -32,5 +35,11 @@
     </section>
 
     <script src="traffic.js"></script>
+    <script>
+        // Include the navbar
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('navbar-container').innerHTML = data);
+    </script>
 </body>
 </html>

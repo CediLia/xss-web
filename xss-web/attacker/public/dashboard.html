@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navbar Included Here -->
+    <div id="navbar-container"></div>
+
     <!-- Dashboard Header -->
     <section>
         <h1>BOBA Dashboard</h1>
@@ -43,6 +46,12 @@
         </div>
     </section>
 
-    <script src="script.js"></script> 
+    <script src="script.js"></script>
+    <script>
+        // Include the navbar
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('navbar-container').innerHTML = data);
+    </script>
 </body>
 </html>
