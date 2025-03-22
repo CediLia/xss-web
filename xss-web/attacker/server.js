@@ -72,6 +72,16 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Victim data route
+app.get('/victim', (req, res) => {
+    // Simulate victim data
+    const victimData = [
+        { email: "victim1@example.com", username: "victim1", password: "password123", comment: "Sample comment 1" },
+        { email: "victim2@example.com", username: "victim2", password: "password456", comment: "Sample comment 2" }
+    ];
+    res.json(victimData);
+});
+
 // Update User Route 
 app.post('/update-user', (req, res) => {
   const { newUsername, newPassword } = req.body;

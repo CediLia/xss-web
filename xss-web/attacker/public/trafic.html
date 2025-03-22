@@ -27,9 +27,7 @@
         <div class="traffic-card">
             <h2>Recent Traffic Events</h2>
             <ul id="traffic-events">
-                <li>Event 1: User 123 hacked</li>
-                <li>Event 2: User 456 targeted</li>
-                <!-- More traffic events will appear here -->
+                <!-- Traffic events will appear here dynamically -->
             </ul>
         </div>
 
@@ -53,9 +51,6 @@
     </section>
 
     <script>
-
-
-
         // Back to Dashboard Button Event
         document.getElementById('back-to-dashboard').addEventListener('click', function() {
             window.location.href = 'dashboard.html'; 
@@ -84,12 +79,12 @@
                 trafficEventsList.appendChild(li);
             });
 
-            // Fetch victim data from the backend API (Replace this with the actual API endpoint)
-            fetch('/api/victims')  // Assuming there's an endpoint that returns victims' data
+            // Fetch the victim data from the server
+            fetch('/victim')  
                 .then(response => response.json())
                 .then(victimData => {
                     const tableBody = document.getElementById('victim-details-table').getElementsByTagName('tbody')[0];
-                    tableBody.innerHTML = ''; // Clear existing rows
+                    tableBody.innerHTML = ''; 
 
                     if (victimData.length === 0) {
                         const row = document.createElement('tr');
