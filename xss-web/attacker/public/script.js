@@ -21,3 +21,14 @@ setInterval(refreshComments, 2000);
 
 // test block 
 setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+setInterval(refreshLists), FOREVER;
+
