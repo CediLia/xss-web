@@ -8,89 +8,94 @@ const db = new sqlite3.Database('./users.db');
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Register Route
-app.post('/register', (req, res) => {
-  const { username, password } = req.body;
+// Create the 'users' table if it doesn't exist
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE,
+      password TEXT
+    )
+  `);
 
-  // Check if the username is already taken
-  db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
+  // Insert Cedilia if not exists (to ensure only Cedilia exists)
+  db.get('SELECT * FROM users WHERE username = ?', ['Cedilia'], (err, row) => {
     if (err) {
-      return res.status(500).json({ error: 'Database error' });
+      console.error('Error checking Cedilia:', err);
     }
 
-    if (row) {
-      return res.status(400).json({ error: 'Username already exists' });
+    if (!row) {
+      const hashedPassword = bcrypt.hashSync('XSSWEB', 10);
+      db.run('INSERT INTO users (username, password) VALUES (?, ?)', ['Cedilia', hashedPassword], function (err) {
+        if (err) {
+          console.error('Error inserting Cedilia:', err);
+        } else {
+          console.log('Cedilia user created!');
+        }
+      });
     }
-
-    // Hash the password before storing it
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    // Insert the new user into the database
-    db.run('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], function (err) {
-      if (err) {
-        return res.status(500).json({ error: 'Database error' });
-      }
-
-      res.status(201).json({ message: 'User registered successfully!' });
-    });
   });
 });
 
-// Login Route
+// Login Route - Always attempt login for Cedilia
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // Log incoming login request
   console.log('Login attempt for username:', username);
 
-  db.get('SELECT * FROM users WHERE username = ?', [username], (err, row) => {
+  // Only allow login for Cedilia
+  if (username !== 'Cedilia') {
+    return res.status(400).json({ error: 'Invalid username or password' });
+  }
+
+  // Retrieve Cedilia's password from the database
+  db.get('SELECT * FROM users WHERE username = ?', ['Cedilia'], (err, row) => {
     if (err) {
       console.error('Database error:', err);
       return res.status(500).json({ error: 'Database error' });
     }
 
     if (!row) {
-      console.log('Invalid username:', username);
+      console.log('Cedilia not found');
       return res.status(400).json({ error: 'Invalid username or password' });
     }
 
     // Compare the password using bcrypt
     if (bcrypt.compareSync(password, row.password)) {
-      console.log('Login successful for user:', username);
+      console.log('Login successful for Cedilia');
       res.status(200).json({ message: 'Login successful!' });
     } else {
-      console.log('Incorrect password for user:', username);
+      console.log('Incorrect password for Cedilia');
       res.status(400).json({ error: 'Invalid username or password' });
     }
   });
 });
 
-// Update User Route (example of how to update user details)
+// Update User Route 
 app.post('/update-user', (req, res) => {
-  const oldUsername = 'testuser'; 
-  const newUsername = 'Cedilia';
-  const newPassword = 'XSSWEB';
+  const { newUsername, newPassword } = req.body;
+
+  // Only allow updating Cedilia's account
+  if (newUsername !== 'Cedilia') {
+    return res.status(400).json({ error: 'You can only update Cedilia\'s account' });
+  }
 
   // Hash the new password
   const hashedPassword = bcrypt.hashSync(newPassword, 10);
 
-  // Update query
-  const updateQuery = `
-    UPDATE users
-    SET username = ?, password = ?
-    WHERE username = ?`;
-
-  // Run the update
-  db.run(updateQuery, [newUsername, hashedPassword, oldUsername], function (err) {
+  // Update Cedilia's username and password
+  db.run('UPDATE users SET username = ?, password = ? WHERE username = ?', ['Cedilia', hashedPassword, 'Cedilia'], function (err) {
     if (err) {
-      return res.status(500).json({ error: 'Failed to update user' });
+      console.error('Failed to update Cedilia:', err);
+      return res.status(500).json({ error: 'Failed to update Cedilia\'s account' });
     }
 
     if (this.changes === 0) {
-      return res.status(400).json({ error: 'User not found or not updated' });
+      return res.status(400).json({ error: 'Cedilia not found or not updated' });
     }
 
-    res.status(200).json({ message: 'User updated successfully' });
+    res.status(200).json({ message: 'Cedilia\'s account updated successfully' });
   });
 });
 
