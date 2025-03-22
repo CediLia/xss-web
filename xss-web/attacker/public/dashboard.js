@@ -27,7 +27,6 @@ function fetchData() {
         .then(comments => {
             // Update comments list
             document.getElementById("comments").innerHTML = comments.map(c => `<li>${c}</li>`).join("");
-            
         });
 }
 
