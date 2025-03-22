@@ -23,6 +23,50 @@
         <p id="login-error" style="color: red; display: none;">Invalid credentials. Please try again.</p>
     </section>
 
-    <script src="login.js"></script>
+    <script>
+        // Get the form elements
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+
+        // Handle form submission
+        loginForm.addEventListener('submit', async (event) => {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Get the username and password from the form
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Send a POST request to the server with the username and password
+            try {
+                const response = await fetch('http://localhost:3001/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                // Check if the login was successful
+                if (response.ok) {
+                    // Hide the error message and redirect
+                    loginError.style.display = 'none';
+                    alert('Login successful!');
+                    window.location.href = 'dashboard.html'; // Redirect to the dashboard
+                } else {
+                    // Show the error message
+                    loginError.textContent = data.error || 'Invalid credentials. Please try again.';
+                    loginError.style.display = 'block';
+                }
+            } catch (error) {
+                // Handle any errors during the fetch request
+                console.error('Error during login:', error);
+                loginError.textContent = 'Something went wrong. Please try again later.';
+                loginError.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
